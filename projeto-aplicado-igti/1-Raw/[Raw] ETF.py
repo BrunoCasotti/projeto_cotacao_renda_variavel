@@ -66,7 +66,7 @@ df_detail_pd["quotaYearApproved"] = df_detail_pd["quotaYearApproved"].dt.year
 
 # COMMAND ----------
 
-EtfDFSerial = spark.createDataFrame(df_detail_pd).drop("detailFund.codes", "detailFund.codesOther", "detailFund.segment")
+EtfDFSerial = spark.createDataFrame(df_detail_pd).drop("detailFund.codes", "detailFund.codesOther", "detailFund.segment", "detailFund.typeFNET")
 
 # COMMAND ----------
 
