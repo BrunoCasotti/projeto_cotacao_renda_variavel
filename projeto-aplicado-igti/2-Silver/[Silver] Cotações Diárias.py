@@ -61,6 +61,19 @@ CotacoesDFSerialChanged = (
 
 # COMMAND ----------
 
+# Selecionando apenas o dia atual
+CotacoesDFSerialDay = (
+    CotacoesDFSerialChanged.groupBy("ticker","ano","preco_abertura","preco_fechamento","preco_maximo","preco_minimo","volume")
+    .agg(max(col("data_pregao")).alias("data_pregao"))
+)
+
+# COMMAND ----------
+
+# Ordenando as colunas
+CotacoesDFSerialDay = CotacoesDFSerialDay.select("ticker", "data_pregao", "ano", "preco_abertura", "preco_fechamento", "preco_maximo", "preco_minimo", "volume")
+
+# COMMAND ----------
+
 # MAGIC %md # 3. Gravação dos dados
 # MAGIC 
 # MAGIC ----
@@ -76,10 +89,10 @@ CotacoesDFSerialChanged = (
 
 # COMMAND ----------
 
-(CotacoesDFSerialChanged
+(CotacoesDFSerialDay
  .write
  .format("parquet")
- .partitionBy("ano", "data_pregao")
+ .partitionBy("data_pregao")
  .mode("overwrite")
  .save("dbfs:/mnt/azparquetprjapl/silver/cotacao/cotacao_diaria")
 )
