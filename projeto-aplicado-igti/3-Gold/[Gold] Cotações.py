@@ -15,14 +15,20 @@ from pyspark.sql.functions import *
 
 # COMMAND ----------
 
-#Conexão
-HistoricoDFSerial = spark.read.parquet("dbfs:/mnt/azparquetprjapl/silver/cotacao/cotacao_historica")
-DiarioDFSerial = spark.read.parquet("dbfs:/mnt/azparquetprjapl/silver/cotacao/cotacao_diaria")
+# #Conexão - carga full
+# HistoricoDFSerial = spark.read.parquet("dbfs:/mnt/azparquetprjapl/silver/cotacao/cotacao_historica")
+# DiarioDFSerial = spark.read.parquet("dbfs:/mnt/azparquetprjapl/silver/cotacao/cotacao_diaria")
+
+# #União das tabelas
+# CotacoesDFSerial = (HistoricoDFSerial.union(DiarioDFSerial.select(HistoricoDFSerial.columns)))
 
 # COMMAND ----------
 
-#União das tabelas
-CotacoesDFSerial = (HistoricoDFSerial.union(DiarioDFSerial))
+#Conexão - carga diária/incremental
+DiarioDFSerial = (
+    spark.read.parquet("dbfs:/mnt/azparquetprjapl/silver/cotacao/cotacao_diaria")
+    .select("ticker", "preco_abertura", "preco_fechamento", "preco_maximo", "preco_minimo", "volume", "ano", "data_pregao")
+)
 
 # COMMAND ----------
 
@@ -41,10 +47,22 @@ CotacoesDFSerial = (HistoricoDFSerial.union(DiarioDFSerial))
 
 # COMMAND ----------
 
-(CotacoesDFSerial
+# # Gravação da carga full
+# (CotacoesDFSerial
+#  .write
+#  .format("parquet")
+#  .partitionBy("ano", "data_pregao")
+#  .mode("overwrite")
+#  .save("dbfs:/mnt/azparquetprjapl/gold/cotacao")
+# )
+
+# COMMAND ----------
+
+# Gravação da carga diária/incremental
+(DiarioDFSerial
  .write
  .format("parquet")
- .partitionBy("ano")
- .mode("overwrite")
+ .partitionBy("ano", "data_pregao")
+ .mode("append")
  .save("dbfs:/mnt/azparquetprjapl/gold/cotacao")
 )
