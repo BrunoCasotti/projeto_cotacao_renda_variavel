@@ -42,10 +42,11 @@ FIIDFSerialSelected = (
 
 # COMMAND ----------
 
-#Alteração do tipo de dados
+#Alteração do tipo de dados e remoção de espaços
 FIIDFSerialChanged = (
     FIIDFSerialSelected.withColumn("ano_aprovado", col("ano_aprovado").cast("int"))
     .withColumn("data_aprovado", to_date(col("data_aprovado"), 'dd/MM/yyyy'))
+    .withColumn("ticker_empresa", trim(col("ticker_empresa")))
 )
 
 # COMMAND ----------
