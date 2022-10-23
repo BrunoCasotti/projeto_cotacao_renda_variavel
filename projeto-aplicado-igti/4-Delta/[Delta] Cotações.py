@@ -64,7 +64,7 @@ CotacoesDFNew = CotacoesNotNull.union(CotacoesNull)
 
 # COMMAND ----------
 
-(CotacoesDFSerial
+(CotacoesDFNew
  .write
  .format("delta")
  .mode("overwrite")
