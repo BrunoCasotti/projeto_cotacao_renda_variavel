@@ -44,4 +44,4 @@ A solução foi dividida em três partes, cada uma com objetivos e atividades es
 
 ## Contato
 
-Para mais informações, entre em contato com [Bruno Oliveira Casotti](mailto:bruno.casotti@live.com).
+Para mais informações, entre em contato com por e-mail [Bruno Oliveira Casotti](mailto:bruno.casotti@live.com) ou via [LinkedIn](https://www.linkedin.com/in/bruno-oliveira-casotti-573063193/).
